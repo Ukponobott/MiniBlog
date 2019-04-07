@@ -18,9 +18,9 @@ def login():
     return "Login to your Account"
 
 
-@app.route("/posts")
-def posts():
-    return "All posts"
+@app.route("/posts/<string>/title")
+def posts(title):
+    return "Single post"
 
 
 if __name__ == '__main__':
