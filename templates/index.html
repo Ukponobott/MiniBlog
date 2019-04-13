@@ -10,11 +10,17 @@
 
 {% for post in posts %}
 
-{{poem.title}}
+<p>Titile: {{post["title"]}}</p>
 
-{{poem.body}}
+<br>
 
-{{[poem.author}}
+{{post["body"]}}
+
+<br>
+
+<p>Author: {{post["author"]}}</p>
+
+<hr>
 
 {% endfor %}
 

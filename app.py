@@ -1,5 +1,5 @@
-from flask import Flask, redirect, render_template, request
-from poem import Poem
+from flask import Flask, redirect, render_template, request, url_for
+# from poem import Poem
 from flask_pymongo import PyMongo
 
 
@@ -10,11 +10,14 @@ mongo = PyMongo(app)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    posts = mongo.db.posts
+
     if request.method == "POST":
-        new_post = Poem(request.form["title"], request.form["body"], request.form["author"])
-        posts.insert(new_post)
+        posts = mongo.db.posts
+        # new_post = request.form["title"], request.form["body"], request.form["author"])
+        posts.insert({"title": request.form["title"], "body": request.form["body"], "author": request.form["author"]})
+        return redirect(url_for('index'))
     else:
+        posts = mongo.db.posts.find()
         return render_template("index.html", posts=posts)
 
 
@@ -35,7 +38,9 @@ def login():
 
 @app.route("/posts/<string>/title")
 def posts(title):
-    return "Single post"
+    view = mongo.db.posts.find_one({"title": title})
+    return render_template('show.html', post=view)
+
 
 
 if __name__ == '__main__':
