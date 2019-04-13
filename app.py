@@ -36,10 +36,14 @@ def login():
     return "Login to your Account"
 
 
-@app.route("/posts/<string>/title")
-def posts(title):
-    view = mongo.db.posts.find_one({"title": title})
-    return render_template('show.html', post=view)
+@app.route("/posts/<string:title>")
+def show(title):
+    posts = mongo.db.posts.find()
+    for post in posts:
+        if post["title"] == title:
+            found_post = post
+    # view = mongo.db.posts.find_one({"title": title})
+    return render_template('show.html', post=found_post)
 
 
 
