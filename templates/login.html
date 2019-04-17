@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Login to Poem Paradise</h1>
+
+<p>Fill the form below with correct details</p>
+
+<form action="{{url_for('login')}}" method="POST">
+    <div><input type="text" name="email" placeholder="Email Address" required></div>
+    <div><input type="password" name="password" placeholder="Password" required></div>
+    <div><input type="submit" value="Submit"></div>
+</form>
+
+
+{% endblock %}

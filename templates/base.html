@@ -5,11 +5,14 @@
     <title>Poem Paradise</title>
 </head>
 <body>
+<a href="{{url_for('index')}}">Home</a>
+{% for message in get_flashed_messages() %}
+{{ message }}
+{% endfor %}
 
 {%  block content %}
 
-
-{%  endblock %}
+{% endblock %}
 
 </body>
 </html>

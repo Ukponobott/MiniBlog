@@ -2,7 +2,13 @@
 
 {% block content %}
 
+
 <h1>Welcome to Poem Paradise</h1>
+
+<hr>
+<a href="{{url_for('register')}}">Register</a>
+<br>
+<a href="{{url_for('login')}}">Login</a>
 
 <hr>
 
@@ -14,14 +20,13 @@
 
 <br>
 
-{{post["body"]}}
-
-<br>
-
 <p>Author: {{post["author"]}}</p>
 
 <hr>
 
+
 {% endfor %}
+
+<a href="{{url_for('new_post')}}">Add new Poem</a>
 
 {%  endblock %}
