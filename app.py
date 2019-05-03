@@ -1,11 +1,13 @@
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 import os
 from flask_pymongo import PyMongo
+from flask_modus import Modus
 
 
 app = Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb://localhost:27017/poem_blog'
 mongo = PyMongo(app)
+modus = Modus(app)
 
 
 app.secret_key = os.urandom(24)
@@ -82,7 +84,7 @@ def logout():
     return redirect(url_for("index"))
 
 
-@app.route("/posts/<string:title>")
+@app.route("/posts/<string:title>", methods=["GET", "PATCH", "DELETE"])
 def show(title):
     posts = mongo.db.posts.find()
     # set the variable "found_post" to an empty string before assigning a value to it later in the condition statement
@@ -91,9 +93,23 @@ def show(title):
     for post in posts:
         if post["title"] == title:
             found_post = post
+            if request.method == b'PATCH':
+                found_post["title"] = request.form["title"]
+                found_post["body"] = request.form["body"]
+                return redirect(url_for('index'))
         else:
             pass
     return render_template('show.html', post=found_post)
+
+
+@app.route('/students/<string:title>/edit', methods=["GET", "PATCH"])
+def edit(title):
+    posts = mongo.db.posts.find()
+    found_post = ""
+    for post in posts:
+        if post["title"] == title:
+            found_post = post
+    return render_template('edit.html', post=found_post)
 
 
 if __name__ == '__main__':
