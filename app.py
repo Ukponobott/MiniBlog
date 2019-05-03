@@ -94,8 +94,15 @@ def show(title):
         if post["title"] == title:
             found_post = post
             if request.method == b'PATCH':
-                found_post["title"] = request.form["title"]
-                found_post["body"] = request.form["body"]
+                edit_post = mongo.db.posts
+                raw = edit_post.find_one({"title": title})
+                new_value = {"$set": {"title": request.form["title"], "body": request.form["body"]}}
+                edit_post.update(raw, new_value)
+                return redirect(url_for("index"))
+            if request.method == b'DELETE':
+                delete_post = mongo.db.posts
+                find = delete_post.find_one({"title": title})
+                delete_post.delete_one(find)
                 return redirect(url_for('index'))
         else:
             pass

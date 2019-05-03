@@ -10,7 +10,13 @@
 
 <p>By: {{post["author"]}}</p>
 
-<a href="{{url_for('edit', title=post['title'])}}">Edit this student</a>
+<a href="{{url_for('edit', title=post['title'])}}">Edit this Post</a>
+
+<h2>Delete this student</h2>
+<form method="POST" action="{{url_for('show', title=post['title'])}}?_method=DELETE">
+    <input type="submit" value="DELETE">
+</form>
+<br>
 
 
 {% endblock %}
