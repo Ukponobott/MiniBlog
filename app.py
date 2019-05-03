@@ -1,5 +1,6 @@
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 import os
+# from flask_bcrypt import
 from flask_pymongo import PyMongo
 from flask_modus import Modus
 
@@ -18,17 +19,23 @@ def index():
     if request.method == "POST":
         posts = mongo.db.posts
         # new_post = request.form["title"], request.form["body"], request.form["author"])
-        posts.insert({"title": request.form["title"], "body": request.form["body"], "author": request.form["author"]})
+        posts.insert_one({"title": request.form["title"],
+                          "body": request.form["body"],
+                          "author": request.form["author"]})
         flash("New Entry Added")
         return redirect(url_for('index'))
     else:
-        posts = mongo.db.posts.find()
+        posts = mongo.db.posts.find().sort("title", 1)
         return render_template("index.html", posts=posts)
 
 
 @app.route("/new")
 def new_post():
-    return render_template("add.html")
+    if 'first_name' in session:
+        return render_template("add.html")
+    else:
+        flash("Please login to share a post")
+        return redirect(url_for('login'))
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -74,10 +81,11 @@ def login():
 @app.route("/dashboard")
 def dashboard():
     if "first_name" in session:
-        return "Welcome " + session["first_name"]
+        # my_posts = mongo.db.posts.find_one()
+        return render_template('dashboard.html')
 
 
-@app.route("/logout", methods=["POST"])
+@app.route("/logout")
 def logout():
     session.pop("first_name", None)
     flash("You are currently logged out")
@@ -109,7 +117,7 @@ def show(title):
     return render_template('show.html', post=found_post)
 
 
-@app.route('/students/<string:title>/edit', methods=["GET", "PATCH"])
+@app.route('/students/<string:title>/edit')
 def edit(title):
     posts = mongo.db.posts.find()
     found_post = ""
