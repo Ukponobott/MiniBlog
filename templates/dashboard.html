@@ -12,7 +12,7 @@
 <hr>
 {% for post in my_posts %}
 
-<p> Title: {{post["title"]}} </p>
+<p>Title: <a href="{{url_for('show',title=post['title'])}}"> {{post["title"]}}</a></p>
 <br>
 <p>Body: {{post["body"]}}</p>
 <hr>
