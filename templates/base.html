@@ -7,11 +7,13 @@
 <body>
 <a href="{{url_for('index')}}">Home</a>
 
-{% if not session %}
+{% if session %}
+<a href="{{ url_for('logout') }}">Logout</a>
+<a href="{{ url_for('dashboard')}}">Dashboard</a>
+
+{% else %}
 <a href="{{ url_for('login') }}">Login</a>
 <a href="{{url_for('register')}}">Register</a>
-{% else %}
-<a href="{{ url_for('logout') }}">Logout</a>
 {% endif %}
 
 {% for message in get_flashed_messages() %}

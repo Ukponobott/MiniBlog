@@ -8,7 +8,7 @@
 
 {{post["body"]}}
 
-<p>By: {{post["author"]}}</p>
+<p>By: {{post["author_first_name"] + " " + post["author_last_name"]}}</p>
 
 {% if 'first_name' in session %}
 

@@ -2,5 +2,21 @@
 
 {% block content %}
 
+{% if session %}
 
+<h1>Welcome back {{session["first_name"]}}</h1>
+
+<br>
+
+<h2>My Posts</h2>
+<hr>
+{% for post in my_posts %}
+
+<p> Title: {{post["title"]}} </p>
+<br>
+<p>Body: {{post["body"]}}</p>
+<hr>
+{% endfor %}
+{% endif %}
+<a href="{{url_for('new_post')}}">Add new Post</a>
 {% endblock %}

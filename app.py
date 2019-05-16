@@ -17,11 +17,14 @@ app.secret_key = os.urandom(24)
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
+        users = mongo.db.users
         posts = mongo.db.posts
+        current_user = users.find_one({"first_name": session["first_name"]})
         # new_post = request.form["title"], request.form["body"], request.form["author"])
         posts.insert_one({"title": request.form["title"],
                           "body": request.form["body"],
-                          "author": request.form["author"]})
+                          "author_first_name": current_user["first_name"],
+                          "author_last_name": current_user["last_name"]})
         flash("New Entry Added")
         return redirect(url_for('index'))
     else:
@@ -81,8 +84,8 @@ def login():
 @app.route("/dashboard")
 def dashboard():
     if "first_name" in session:
-        # my_posts = mongo.db.posts.find_one()
-        return render_template('dashboard.html')
+        my_posts = mongo.db.posts.find({"author_first_name": session["first_name"]})
+        return render_template('dashboard.html', my_posts=my_posts)
 
 
 @app.route("/logout")
