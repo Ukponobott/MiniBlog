@@ -20,8 +20,10 @@ def index():
         users = mongo.db.users
         posts = mongo.db.posts
         current_user = users.find_one({"first_name": session["first_name"]})
-        # new_post = request.form["title"], request.form["body"], request.form["author"])
-        posts.insert_one({"title": request.form["title"],
+        # store the post_title in a variable and convert it to lowercase before storing it in the database
+        title = request.form["title"]
+        title = title.lower()
+        posts.insert_one({"title": title,
                           "body": request.form["body"],
                           "author_first_name": current_user["first_name"],
                           "author_last_name": current_user["last_name"]})
@@ -86,6 +88,9 @@ def dashboard():
     if "first_name" in session:
         my_posts = mongo.db.posts.find({"author_first_name": session["first_name"]})
         return render_template('dashboard.html', my_posts=my_posts)
+    else:
+        return redirect(url_for("login"))
+# def edit_profile():
 
 
 @app.route("/logout")
@@ -107,7 +112,8 @@ def show(title):
             if request.method == b'PATCH':
                 edit_post = mongo.db.posts
                 raw = edit_post.find_one({"title": title})
-                new_value = {"$set": {"title": request.form["title"], "body": request.form["body"]}}
+                new_value = {"$set": {"title": request.form["title"],
+                                      "body": request.form["body"]}}
                 edit_post.update(raw, new_value)
                 return redirect(url_for("index"))
             if request.method == b'DELETE':

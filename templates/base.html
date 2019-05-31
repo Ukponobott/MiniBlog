@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Poem Paradise</title>
+    <title>Blog</title>
 </head>
 <body>
 <a href="{{url_for('index')}}">Home</a>
 
 {% if session %}
 <a href="{{ url_for('logout') }}">Logout</a>
-<a href="{{ url_for('dashboard')}}">Dashboard</a>
+
 
 {% else %}
 <a href="{{ url_for('login') }}">Login</a>

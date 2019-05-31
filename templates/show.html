@@ -2,22 +2,18 @@
 
 {% block content %}
 
+{% if session %}
+<a href="{{ url_for('dashboard')}}">Dashboard</a>
+{% endif %}
 
-<h1>{{post["title"]}}</h1>
+<h1>{{post["title"].title()}}</h1>
 <hr>
 
 {{post["body"]}}
 
 <p>By: {{post["author_first_name"] + " " + post["author_last_name"]}}</p>
+<hr>
 
-{% if 'first_name' in session %}
 
-<a href="{{url_for('edit', title=post['title'])}}">Edit this Post</a>
-
-<form method="POST" action="{{url_for('show', title=post['title'])}}?_method=DELETE">
-    <input type="submit" value="DELETE">
-</form>
-<br>
-{% endif %}
 
 {% endblock %}
