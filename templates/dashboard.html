@@ -19,13 +19,13 @@
 
 <p>{{post["body"]}}</p>
 
-<hr>
 <a href="{{url_for('edit', title=post['title'])}}">EDIT</a>
-
 
 <form method="POST" action="{{url_for('show', title=post['title'])}}?_method=DELETE">
     <input type="submit" value="DELETE">
 </form>
+
+<hr>
 
 {% endfor %}
 {% endif %}

@@ -112,7 +112,9 @@ def show(title):
             if request.method == b'PATCH':
                 edit_post = mongo.db.posts
                 raw = edit_post.find_one({"title": title})
-                new_value = {"$set": {"title": request.form["title"],
+                new_title = request.form["title"]
+                new_title = new_title.lower()
+                new_value = {"$set": {"title": new_title,
                                       "body": request.form["body"]}}
                 edit_post.update(raw, new_value)
                 return redirect(url_for("index"))
